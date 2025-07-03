@@ -1,0 +1,3 @@
+[submodule "JaehuruEngine_Core"]
+	path = JaehuruEngine_Core
+	url = https://github.com/jaehuru/JaehuruEngine_Core.git
