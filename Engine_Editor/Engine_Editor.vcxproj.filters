@@ -125,10 +125,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>_Resource File</Filter>
-    </Image>
-    <Image Include="Engine_Editor.ico">
+    <Image Include="icon\JaehuruEngine.ico">
       <Filter>_Resource File</Filter>
     </Image>
   </ItemGroup>
