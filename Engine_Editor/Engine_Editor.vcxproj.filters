@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="_Resource File">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="_Header File">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="SOURCE">
       <UniqueIdentifier>{ac2f7322-8f8b-4e23-a5d4-2d1813f4ac45}</UniqueIdentifier>
     </Filter>
@@ -18,35 +10,82 @@
     <Filter Include="SOURCE\private">
       <UniqueIdentifier>{dc548d68-2bc7-4f07-a794-3581a1da9b3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_Windows Desktop Wizard Header File">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="_Windows Desktop Wizard Resource File">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{6c550fe4-bbc6-4b38-bb66-20911a5f4bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Scenes">
+      <UniqueIdentifier>{c864b4bc-6e9f-479f-a075-9d56840a5c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Script">
+      <UniqueIdentifier>{61e71346-8b18-4c20-9b31-e2647a619c1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Actor">
+      <UniqueIdentifier>{f8c17242-3986-42c7-b9d5-f32ea401c0aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>_Header File</Filter>
+      <Filter>_Windows Desktop Wizard Header File</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>_Header File</Filter>
+      <Filter>_Windows Desktop Wizard Header File</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>_Header File</Filter>
+      <Filter>_Windows Desktop Wizard Header File</Filter>
     </ClInclude>
     <ClInclude Include="Engine_Editor.h">
-      <Filter>_Header File</Filter>
+      <Filter>_Windows Desktop Wizard Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\LoadScenes.h">
+      <Filter>Contents\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\JLoadingScene.h">
+      <Filter>Contents\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\JPlayScene.h">
+      <Filter>Contents\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\JCameraScript.h">
+      <Filter>Contents\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\APlayer.h">
+      <Filter>Contents\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine_Editor.rc">
-      <Filter>_Resource File</Filter>
+      <Filter>_Windows Desktop Wizard Resource File</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>_Resource File</Filter>
+      <Filter>_Windows Desktop Wizard Resource File</Filter>
     </Image>
     <Image Include="Engine_Editor.ico">
-      <Filter>_Resource File</Filter>
+      <Filter>_Windows Desktop Wizard Resource File</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Contents\JLoadingScene.cpp">
+      <Filter>Contents\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\JPlayScene.cpp">
+      <Filter>Contents\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\JCameraScript.cpp">
+      <Filter>Contents\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\APlayer.cpp">
+      <Filter>Contents\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

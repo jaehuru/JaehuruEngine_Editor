@@ -76,7 +76,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,7 +103,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,7 +128,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,7 +155,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,12 +175,21 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Contents\APlayer.h" />
+    <ClInclude Include="Contents\JCameraScript.h" />
+    <ClInclude Include="Contents\JLoadingScene.h" />
+    <ClInclude Include="Contents\LoadScenes.h" />
+    <ClInclude Include="Contents\JPlayScene.h" />
     <ClInclude Include="Engine_Editor.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Contents\APlayer.cpp" />
+    <ClCompile Include="Contents\JCameraScript.cpp" />
+    <ClCompile Include="Contents\JLoadingScene.cpp" />
+    <ClCompile Include="Contents\JPlayScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

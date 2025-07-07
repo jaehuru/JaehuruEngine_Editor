@@ -1,0 +1,16 @@
+{
+  "name": "jaehuru_engine_editor",
+  "version-string": "V2.00",
+  "dependencies": [
+    {
+      "name": "imgui",
+      "features": 
+      [
+        "docking-experimental",
+        "freetype",
+        "dx11-binding",
+        "win32-binding"
+      ]
+    }
+  ]
+}
