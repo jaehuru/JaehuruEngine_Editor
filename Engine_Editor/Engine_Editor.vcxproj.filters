@@ -10,14 +10,6 @@
     <Filter Include="SOURCE\private">
       <UniqueIdentifier>{dc548d68-2bc7-4f07-a794-3581a1da9b3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Windows Desktop Wizard Header File">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="_Windows Desktop Wizard Resource File">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Contents">
       <UniqueIdentifier>{6c550fe4-bbc6-4b38-bb66-20911a5f4bb7}</UniqueIdentifier>
     </Filter>
@@ -30,20 +22,45 @@
     <Filter Include="Contents\Actor">
       <UniqueIdentifier>{f8c17242-3986-42c7-b9d5-f32ea401c0aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SOURCE\public\Application">
+      <UniqueIdentifier>{c7859b13-7bb8-42d0-b9e1-fa54d988efd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\public\Component">
+      <UniqueIdentifier>{4529f4a4-8d95-472b-b607-0b2fd804dcb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\public\Editor">
+      <UniqueIdentifier>{4fdb5ab0-d9a5-4c16-8bf5-5ca332df2b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\public\Layout">
+      <UniqueIdentifier>{fc5e919d-35d3-4670-a2e7-ba3ca4f519a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\public\Entity">
+      <UniqueIdentifier>{b07aaa7f-7a0a-4594-8e06-b4993d59cb31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Application">
+      <UniqueIdentifier>{6afb3afa-1dea-478a-8933-edd42bf50bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Component">
+      <UniqueIdentifier>{9f5fc514-4d7a-4409-8f3d-f19bef84be9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Editor">
+      <UniqueIdentifier>{132ba574-a41e-4f22-9c73-a55433728670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Entity">
+      <UniqueIdentifier>{48b078a8-a747-459d-acff-5e4f4db93d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Layout">
+      <UniqueIdentifier>{72875755-9434-476e-9fb6-7550541d7579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Resource File">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="_Window Wizard">
+      <UniqueIdentifier>{e07b910e-2dba-422e-8b4c-19ec9339004d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>_Windows Desktop Wizard Header File</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>_Windows Desktop Wizard Header File</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>_Windows Desktop Wizard Header File</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine_Editor.h">
-      <Filter>_Windows Desktop Wizard Header File</Filter>
-    </ClInclude>
     <ClInclude Include="Contents\LoadScenes.h">
       <Filter>Contents\Scenes</Filter>
     </ClInclude>
@@ -59,18 +76,51 @@
     <ClInclude Include="Contents\APlayer.h">
       <Filter>Contents\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>_Resource File</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>_Window Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>_Window Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine_Editor.h">
+      <Filter>_Window Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Application\GApplication.h">
+      <Filter>SOURCE\public\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Component\GComponent.h">
+      <Filter>SOURCE\public\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Component\GTransform.h">
+      <Filter>SOURCE\public\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Editor\GEditor.h">
+      <Filter>SOURCE\public\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Editor\GEditorWindow.h">
+      <Filter>SOURCE\public\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Entity\GEntity.h">
+      <Filter>SOURCE\public\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Layout\GLayout.h">
+      <Filter>SOURCE\public\Layout</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine_Editor.rc">
-      <Filter>_Windows Desktop Wizard Resource File</Filter>
+      <Filter>_Resource File</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>_Windows Desktop Wizard Resource File</Filter>
+      <Filter>_Resource File</Filter>
     </Image>
     <Image Include="Engine_Editor.ico">
-      <Filter>_Windows Desktop Wizard Resource File</Filter>
+      <Filter>_Resource File</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +136,27 @@
     </ClCompile>
     <ClCompile Include="Contents\APlayer.cpp">
       <Filter>Contents\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Application\GApplication.cpp">
+      <Filter>SOURCE\private\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Component\GComponent.cpp">
+      <Filter>SOURCE\private\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Component\GTransform.cpp">
+      <Filter>SOURCE\private\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Editor\GEditor.cpp">
+      <Filter>SOURCE\private\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Editor\GEditorWindow.cpp">
+      <Filter>SOURCE\private\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Entity\GEntity.cpp">
+      <Filter>SOURCE\private\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Layout\GLayout.cpp">
+      <Filter>SOURCE\private\Layout</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

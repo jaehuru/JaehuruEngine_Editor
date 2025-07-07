@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)\SOURCE\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)\SOURCE\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)\SOURCE\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)JaehuruEngine_Core\Engine_Core\public;$(SolutionDir)JaehuruEngine_Core\External\FMOD\lib\x64;$(ProjectDir)\SOURCE\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -183,6 +183,13 @@
     <ClInclude Include="Engine_Editor.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SOURCE\public\Application\GApplication.h" />
+    <ClInclude Include="SOURCE\public\Component\GComponent.h" />
+    <ClInclude Include="SOURCE\public\Component\GTransform.h" />
+    <ClInclude Include="SOURCE\public\Editor\GEditor.h" />
+    <ClInclude Include="SOURCE\public\Editor\GEditorWindow.h" />
+    <ClInclude Include="SOURCE\public\Entity\GEntity.h" />
+    <ClInclude Include="SOURCE\public\Layout\GLayout.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +198,13 @@
     <ClCompile Include="Contents\JLoadingScene.cpp" />
     <ClCompile Include="Contents\JPlayScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SOURCE\private\Application\GApplication.cpp" />
+    <ClCompile Include="SOURCE\private\Component\GComponent.cpp" />
+    <ClCompile Include="SOURCE\private\Component\GTransform.cpp" />
+    <ClCompile Include="SOURCE\private\Editor\GEditor.cpp" />
+    <ClCompile Include="SOURCE\private\Editor\GEditorWindow.cpp" />
+    <ClCompile Include="SOURCE\private\Entity\GEntity.cpp" />
+    <ClCompile Include="SOURCE\private\Layout\GLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine_Editor.rc" />

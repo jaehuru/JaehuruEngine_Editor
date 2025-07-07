@@ -69,8 +69,6 @@ void JLoadingScene::resourcesLoad(mutex& m)
 	m.lock();
 	{
 		RResources::Load<RTexture>(L"Player", L"../Resources/CloudOcean.png");
-		renderer::Initialize();
-
 		JSceneManager::CreateScene<JPlayScene>(L"PlayScene");
 	}
 	m.unlock();
