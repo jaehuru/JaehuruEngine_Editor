@@ -3,10 +3,19 @@
 //Engine
 #include "HighLevelInterface/IApplication.h"
 #include "Graphics/RGraphicDevice_DX11.h"
+#include "Renderer/RRenderer.h"
+#include "Actor/AActor.h"
+#include "Component/Transform/JTransform.h"
 //imgui
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include "ImGuizmo.h"
+#include "ImSequencer.h"
+#include "ImZoomSlider.h"
+#include "ImCurveEdit.h"
+#include "GraphEditor.h"
 //Contents
 #include "Contents/LoadScenes.h"
 
@@ -106,6 +115,45 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
 
+            //imGuizmo
+            ImGuiIO& io = ImGui::GetIO();
+
+            ImGuizmo::SetOrthographic(false/*!isPerspective*/);
+            ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
+
+            ImGuizmo::BeginFrame();
+
+            UINT width = application.GetWidth();
+            UINT height = application.GetHeight();
+            float windowWidth = (float)ImGui::GetWindowWidth();
+            float windowHeight = (float)ImGui::GetWindowHeight();
+
+            RECT rect = { 0, 0, 0, 0 };
+            ::GetClientRect(application.GetHwnd(), &rect);
+
+            // Transform start
+            //ImGuizmo::SetRect(0, 0, (float)width, (float)height);
+            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+            FMatrix viewMatirx;
+            FMatrix projectionMatirx;
+
+            if (renderer::mainCamera)
+            {
+                viewMatirx = renderer::mainCamera->GetViewMatrix();
+                projectionMatirx = renderer::mainCamera->GetProjectionMatrix();
+            }
+
+            FMatrix modelMatrix;
+            if (renderer::selectedActor)
+            {
+                modelMatrix = renderer::selectedActor->GetComponent<JTransform>()->GetWorldMatrix();
+            }
+
+            ImGuizmo::Manipulate(*viewMatirx.m, *projectionMatirx.m,
+                ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, *modelMatrix.m);
+
+
             // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
             if (show_demo_window)
                 ImGui::ShowDemoWindow(&show_demo_window);
@@ -199,7 +247,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    const UINT height = 900;
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+       0, 0, width, height, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {

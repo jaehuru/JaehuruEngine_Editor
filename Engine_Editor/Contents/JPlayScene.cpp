@@ -12,8 +12,7 @@
 #include "Renderer/RRenderer.h"
 
 
-JPlayScene::JPlayScene() : 
-	mPlayer(nullptr)
+JPlayScene::JPlayScene()
 {
 
 }
@@ -30,18 +29,19 @@ void JPlayScene::Initialize()
 	// main camera
 	AActor* camera = Instantiate<AActor>(ELayerType::None, FVector3(0.0f, 0.0f, -10.0f));
 	JCamera* cameraComp = camera->AddComponent<JCamera>();
-	cameraComp->SetProjectionType(JCamera::EProjectionType::Orthographic);
+	cameraComp->SetProjectionType(JCamera::EProjectionType::Perspective);
 
 	JCameraScript* cameraScript = camera->AddComponent<JCameraScript>();
 	renderer::mainCamera = cameraComp;
-	cameraComp->SetSize(200.0f);
 
-	mPlayer = Instantiate<APlayer>(ELayerType::Player);
-	JDontDestroyOnLoad(mPlayer);
+	// player
+	AActor* player = Instantiate<APlayer>(ELayerType::Player);
+	JDontDestroyOnLoad(player);
 
-	JSpriteRenderer* sr = mPlayer->AddComponent<JSpriteRenderer>();
-	sr->SetMaterial(RResources::Find<RMaterial>(L"SpriteMaterial"));
+	JSpriteRenderer* sr = player->AddComponent<JSpriteRenderer>();
 	sr->SetSprite(RResources::Find<RTexture>(L"Player"));
+
+	renderer::selectedActor = player;
 }
 
 void JPlayScene::Update()

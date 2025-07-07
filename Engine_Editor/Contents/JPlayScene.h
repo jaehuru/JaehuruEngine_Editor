@@ -18,6 +18,5 @@ public:
 	void	OnExit()		override;
 
 private:
-	APlayer* mPlayer;
 };
 
