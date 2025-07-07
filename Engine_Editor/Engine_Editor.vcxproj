@@ -187,9 +187,10 @@
     <ClInclude Include="SOURCE\public\Component\GComponent.h" />
     <ClInclude Include="SOURCE\public\Component\GTransform.h" />
     <ClInclude Include="SOURCE\public\Editor\GEditor.h" />
-    <ClInclude Include="SOURCE\public\Editor\GEditorWindow.h" />
     <ClInclude Include="SOURCE\public\Entity\GEntity.h" />
     <ClInclude Include="SOURCE\public\Layout\GLayout.h" />
+    <ClInclude Include="SOURCE\public\Windows\GEditorWindow.h" />
+    <ClInclude Include="SOURCE\public\Windows\GInspectorWindow.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -202,9 +203,10 @@
     <ClCompile Include="SOURCE\private\Component\GComponent.cpp" />
     <ClCompile Include="SOURCE\private\Component\GTransform.cpp" />
     <ClCompile Include="SOURCE\private\Editor\GEditor.cpp" />
-    <ClCompile Include="SOURCE\private\Editor\GEditorWindow.cpp" />
     <ClCompile Include="SOURCE\private\Entity\GEntity.cpp" />
     <ClCompile Include="SOURCE\private\Layout\GLayout.cpp" />
+    <ClCompile Include="SOURCE\private\Windows\GEditorWindow.cpp" />
+    <ClCompile Include="SOURCE\private\Windows\GInspectorWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine_Editor.rc" />

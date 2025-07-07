@@ -59,6 +59,12 @@
     <Filter Include="_Window Wizard">
       <UniqueIdentifier>{e07b910e-2dba-422e-8b4c-19ec9339004d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SOURCE\public\Windows">
+      <UniqueIdentifier>{26a1f427-4579-4c73-aa74-cf512ac4b4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE\private\Window">
+      <UniqueIdentifier>{28c56788-f065-486c-bb70-465ea4db2bd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\LoadScenes.h">
@@ -100,14 +106,17 @@
     <ClInclude Include="SOURCE\public\Editor\GEditor.h">
       <Filter>SOURCE\public\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\public\Editor\GEditorWindow.h">
-      <Filter>SOURCE\public\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\public\Entity\GEntity.h">
       <Filter>SOURCE\public\Entity</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\public\Layout\GLayout.h">
       <Filter>SOURCE\public\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Windows\GInspectorWindow.h">
+      <Filter>SOURCE\public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\public\Windows\GEditorWindow.h">
+      <Filter>SOURCE\public\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -149,14 +158,17 @@
     <ClCompile Include="SOURCE\private\Editor\GEditor.cpp">
       <Filter>SOURCE\private\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\private\Editor\GEditorWindow.cpp">
-      <Filter>SOURCE\private\Editor</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\private\Entity\GEntity.cpp">
       <Filter>SOURCE\private\Entity</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\private\Layout\GLayout.cpp">
       <Filter>SOURCE\private\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Windows\GInspectorWindow.cpp">
+      <Filter>SOURCE\private\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Windows\GEditorWindow.cpp">
+      <Filter>SOURCE\private\Window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

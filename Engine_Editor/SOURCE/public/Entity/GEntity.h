@@ -19,10 +19,10 @@ public:
 	GEntity();
 	virtual ~GEntity();
 
-	wstring& GetName() { return mName; }
+	string& GetName() { return mName; }
 
-	void SetName(const wstring& name) { mName = name; }
+	void SetName(const string& name) { mName = name; }
 
 private:
-	wstring mName;
+	string mName;
 };

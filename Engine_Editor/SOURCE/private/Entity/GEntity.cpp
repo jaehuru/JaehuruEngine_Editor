@@ -3,7 +3,7 @@
 
 
 GEntity::GEntity()
-	: mName(L"")
+	: mName("")
 {
 
 }

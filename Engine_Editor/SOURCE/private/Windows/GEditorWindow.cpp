@@ -1,10 +1,11 @@
-#include "Editor/GEditorWindow.h"
+#include "Windows/GEditorWindow.h"
 
 
 
 
 GEditorWindow::GEditorWindow() :
-	GEntity()
+	GEntity(),
+	mFlag(ImGuiWindowFlags_None)
 {
 
 }
@@ -25,6 +26,11 @@ void GEditorWindow::Update()
 }
 
 void GEditorWindow::OnGUI()
+{
+
+}
+
+void GEditorWindow::Run()
 {
 
 }

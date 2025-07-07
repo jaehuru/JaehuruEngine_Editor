@@ -1,7 +1,8 @@
 //Editor
 #include "Application/GApplication.h"
 #include "Editor/GEditor.h"
-#include "Editor/GEditorWindow.h"
+#include "Windows/GEditorWindow.h"
+#include "Windows/GInspectorWindow.h"
 //Core
 #include "HighLevelInterface/IApplication.h"
 #include "Renderer/RRenderer.h"
@@ -14,9 +15,18 @@
 
 extern IApplication application;
 
+ImGuiWindowFlags GApplication::mFlag = ImGuiWindowFlags_None;
+ImGuiDockNodeFlags GApplication::mDockspaceFlags = ImGuiDockNodeFlags_None;
+GApplication::EState GApplication::mState = GApplication::EState::Active;
+bool GApplication::mFullScreen = true;
+map<wstring, GEditorWindow*> GApplication::mEditorWindows;
+
 bool GApplication::Initialize()
 {
 	imGguiInitialize();
+
+	GInspectorWindow* inspector = new GInspectorWindow();
+	mEditorWindows.insert(make_pair(L"InspectorWindow", inspector));
 
 	return true;
 }
@@ -44,6 +54,26 @@ void GApplication::Release()
 	ImGui::DestroyContext();
 }
 
+void GApplication::OpenProject()
+{
+
+}
+
+void GApplication::NewScene()
+{
+
+}
+
+void GApplication::SaveScene()
+{
+
+}
+
+void GApplication::SaveSceneAs()
+{
+
+}
+
 bool GApplication::imGguiInitialize()
 {
 	// Setup Dear ImGui context
@@ -55,9 +85,12 @@ bool GApplication::imGguiInitialize()
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
+	/*io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;*/
+
+
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsLight();
 
 	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -91,85 +124,107 @@ void GApplication::imGuiRender()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	//imGuizmo
+	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+	// because it would be confusing to have two docking targets within each others.
+	mFlag = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	if (mFullScreen)
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->Pos);
+		ImGui::SetNextWindowSize(viewport->Size);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		mFlag |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		mFlag |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	}
+
+	// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+	// and handle the pass-thru hole, so we ask Begin() to not render a background.
+	if (mDockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
+		mFlag |= ImGuiWindowFlags_NoBackground;
+
+	// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+	// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+	// all active windows docked into it will lose their parent and become undocked.
+	// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	bool Active = static_cast<bool>(mState);
+	ImGui::Begin("GApplication", &Active, mFlag);
+	ImGui::PopStyleVar();
+
+	if (mFullScreen)
+		ImGui::PopStyleVar(2);
+
+	// DockSpace
 	ImGuiIO& io = ImGui::GetIO();
-
-	ImGuizmo::SetOrthographic(false/*!isPerspective*/);
-	ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
-
-	ImGuizmo::BeginFrame();
-
-	UINT width = application.GetWidth();
-	UINT height = application.GetHeight();
-	float windowWidth = (float)ImGui::GetWindowWidth();
-	float windowHeight = (float)ImGui::GetWindowHeight();
-
-	RECT rect = { 0, 0, 0, 0 };
-	::GetClientRect(application.GetHwnd(), &rect);
-
-	// Transform start
-	//ImGuizmo::SetRect(0, 0, width, height);
-	ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
-	FMatrix viewMatirx;
-	FMatrix projectionMatirx;
-
-	if (renderer::mainCamera)
+	ImGuiStyle& style = ImGui::GetStyle();
+	float minWinSizeX = style.WindowMinSize.x;
+	style.WindowMinSize.x = 370.0f;
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
-		viewMatirx = renderer::mainCamera->GetViewMatrix();
-		projectionMatirx = renderer::mainCamera->GetProjectionMatrix();
+		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), mDockspaceFlags);
 	}
 
-	FMatrix modelMatrix;
-	if (renderer::selectedActor)
+	style.WindowMinSize.x = minWinSizeX;
+
+	if (ImGui::BeginMenuBar())
 	{
-		modelMatrix = renderer::selectedActor->GetComponent<JTransform>()->GetWorldMatrix();
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
+				OpenProject();
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("New Scene", "Ctrl+N"))
+				NewScene();
+
+			if (ImGui::MenuItem("Save Scene", "Ctrl+S"))
+				SaveScene();
+
+			if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
+				SaveSceneAs();
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Exit"))
+				application.Close();
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Script"))
+		{
+			if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
+			{
+				//ScriptEngine::ReloadAssembly(); ���� C#��ũ��Ʈ �߰������ ����� �߰��� ����
+			}
+
+			ImGui::EndMenu();
+		}
+
+
+		ImGui::EndMenuBar();
 	}
 
-	ImGuizmo::Manipulate(*viewMatirx.m, *projectionMatirx.m,
-		ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, *modelMatrix.m);
+	for (auto iter : mEditorWindows)
+		iter.second->Run();
 
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	if (show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
+	// viewport
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+	ImGui::Begin("Viewport");
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	{
-		static float f = 0.0f;
-		static int counter = 0;
+	ImGui::End();
+	ImGui::PopStyleVar();
 
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-		ImGui::Checkbox("Another Window", &show_another_window);
-
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
-
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-		ImGui::End();
-	}
-
-	// 3. Show another simple window.
-	if (show_another_window)
-	{
-		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-		ImGui::Text("Hello from another window!");
-		if (ImGui::Button("Close Me"))
-			show_another_window = false;
-		ImGui::End();
-	}
+	ImGui::End();
 
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
 
 	// Update and Render additional Platform Windows
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
