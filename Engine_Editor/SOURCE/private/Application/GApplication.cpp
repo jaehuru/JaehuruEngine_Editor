@@ -8,23 +8,28 @@
 #include "Renderer/RRenderer.h"
 #include "Actor/AActor.h"
 #include "Component/Transform/JTransform.h"
-
-
+#include "Graphics/RRenderTarget.h"
+#include "Resource/RTexture.h"
 
 
 
 extern IApplication application;
 
+map<wstring, GEditorWindow*> GApplication::mEditorWindows;
 ImGuiWindowFlags GApplication::mFlag = ImGuiWindowFlags_None;
 ImGuiDockNodeFlags GApplication::mDockspaceFlags = ImGuiDockNodeFlags_None;
 GApplication::EState GApplication::mState = GApplication::EState::Active;
 bool GApplication::mFullScreen = true;
-map<wstring, GEditorWindow*> GApplication::mEditorWindows;
+FVector2 GApplication::mViewportBounds[2] = {};
+FVector2 GApplication::mViewportSize;
+bool GApplication::mViewportFocused = false;
+bool GApplication::mViewportHovered = false;
+RRenderTarget* GApplication::mFrameBuffer = nullptr;
 
 bool GApplication::Initialize()
 {
 	imGguiInitialize();
-
+	mFrameBuffer = renderer::FrameBuffer;
 	GInspectorWindow* inspector = new GInspectorWindow();
 	mEditorWindows.insert(make_pair(L"InspectorWindow", inspector));
 
@@ -70,6 +75,11 @@ void GApplication::SaveScene()
 }
 
 void GApplication::SaveSceneAs()
+{
+
+}
+
+void GApplication::OpenScene(const filesystem::path& path)
 {
 
 }
@@ -215,7 +225,43 @@ void GApplication::imGuiRender()
 
 	// viewport
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-	ImGui::Begin("Viewport");
+	ImGui::Begin("Scene");
+
+	auto viewportMinRegion = ImGui::GetWindowContentRegionMin(); // 씬뷰의 최소 좌표
+	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax(); // 씬뷰의 최대 좌표
+	auto viewportOffset = ImGui::GetWindowPos(); // 씬뷰의 위치
+
+	const int letTop = 0;
+	mViewportBounds[letTop] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+
+	const int rightBottom = 1;
+	mViewportBounds[rightBottom] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+
+	// check if the mouse,keyboard is on the Sceneview
+	mViewportFocused = ImGui::IsWindowFocused();
+	mViewportHovered = ImGui::IsWindowHovered();
+
+	// to do : mouse, keyboard event
+	// 
+
+	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+	mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+	RTexture* texture = mFrameBuffer->GetAttachmentTexture(0);
+	ImGui::Image((ImTextureID)texture->GetSRV().Get(), ImVec2{ mViewportSize.x, mViewportSize.y }
+	, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
+
+	// Open Scene by drag and drop
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PROJECT_ITEM"))
+		{
+			const wchar_t* path = (const wchar_t*)payload->Data;
+			OpenScene(path);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	// To do : guizmo
 
 	ImGui::End();
 	ImGui::PopStyleVar();

@@ -110,9 +110,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
    if (FAILED(CoInitializeEx(nullptr, COINIT_MULTITHREADED)))
        assert(false);
 
