@@ -10,6 +10,8 @@
 #include "Component/Transform/JTransform.h"
 #include "Graphics/RRenderTarget.h"
 #include "Resource/RTexture.h"
+#include "Helpers/Input.h"
+#include "Component/Camera/JCamera.h"
 
 
 
@@ -24,6 +26,7 @@ FVector2 GApplication::mViewportBounds[2] = {};
 FVector2 GApplication::mViewportSize;
 bool GApplication::mViewportFocused = false;
 bool GApplication::mViewportHovered = false;
+int GApplication::mGuizmoType = -1;
 RRenderTarget* GApplication::mFrameBuffer = nullptr;
 
 bool GApplication::Initialize()
@@ -133,6 +136,7 @@ void GApplication::imGuiRender()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 	// because it would be confusing to have two docking targets within each others.
@@ -210,7 +214,7 @@ void GApplication::imGuiRender()
 		{
 			if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
 			{
-				//ScriptEngine::ReloadAssembly(); ���� C#��ũ��Ʈ �߰������ ����� �߰��� ����
+				//ScriptEngine::ReloadAssembly();
 			}
 
 			ImGui::EndMenu();
@@ -227,14 +231,13 @@ void GApplication::imGuiRender()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 	ImGui::Begin("Scene");
 
-	auto viewportMinRegion = ImGui::GetWindowContentRegionMin(); // 씬뷰의 최소 좌표
-	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax(); // 씬뷰의 최대 좌표
-	auto viewportOffset = ImGui::GetWindowPos(); // 씬뷰의 위치
+	auto viewportMinRegion = ImGui::GetWindowContentRegionMin(); 
+	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax(); 
+	auto viewportOffset = ImGui::GetWindowPos(); 
 
 	const int letTop = 0;
-	mViewportBounds[letTop] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-
 	const int rightBottom = 1;
+	mViewportBounds[letTop] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
 	mViewportBounds[rightBottom] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 	// check if the mouse,keyboard is on the Sceneview
@@ -261,7 +264,58 @@ void GApplication::imGuiRender()
 		ImGui::EndDragDropTarget();
 	}
 
-	// To do : guizmo
+	// guizmo
+	AActor* selectedActor = renderer::selectedActor;
+	mGuizmoType = ImGuizmo::OPERATION::TRANSLATE;
+	if (selectedActor && mGuizmoType != -1)
+	{
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(mViewportBounds[0].x, mViewportBounds[0].y
+			, mViewportBounds[1].x - mViewportBounds[0].x, mViewportBounds[1].y - mViewportBounds[0].y);
+
+		// To do : guizmo...
+		// game view camera setting
+
+		// Scene Camera
+		const FMatrix& viewMatrix = renderer::mainCamera->GetViewMatrix();
+		const FMatrix& projectionMatrix = renderer::mainCamera->GetProjectionMatrix();
+
+		// Object Transform
+		JTransform* transform = selectedActor->GetComponent<JTransform>();
+		FMatrix worldMatrix = transform->GetWorldMatrix();
+
+		// snapping
+		bool snap = Input::GetKey(EKeyCode::Leftcontrol);
+		float snapValue = 0.5f;
+
+		// snap to 45 degrees for rotation
+		if (mGuizmoType == ImGuizmo::OPERATION::ROTATE)
+			snapValue = 45.0f;
+
+		float snapValues[3] = { snapValue, snapValue, snapValue };
+
+		ImGuizmo::Manipulate(*viewMatrix.m, *projectionMatrix.m, static_cast<ImGuizmo::OPERATION>(mGuizmoType)
+			, ImGuizmo::LOCAL, *worldMatrix.m, nullptr, snap ? snapValues : nullptr);
+
+		if (ImGuizmo::IsUsing())
+		{
+			// Decompose matrix to translation, rotation and scale
+			float translation[3];
+			float rotation[3];
+			float scale[3];
+			ImGuizmo::DecomposeMatrixToComponents(*worldMatrix.m, translation, rotation, scale);
+
+			// delta rotation from the current rotation
+			FVector3 deltaRotation = FVector3(rotation) - transform->GetRotation();
+			deltaRotation = transform->GetRotation() + deltaRotation;
+
+			// set the new transform
+			transform->SetScale(FVector3(scale));
+			transform->SetRotation(FVector3(deltaRotation));
+			transform->SetPosition(FVector3(translation));
+		}
+	}
 
 	ImGui::End();
 	ImGui::PopStyleVar();

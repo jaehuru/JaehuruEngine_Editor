@@ -52,6 +52,7 @@ private:
 	static FVector2				mViewportSize;
 	static bool					mViewportFocused;
 	static bool					mViewportHovered;
+	static int					mGuizmoType;
 
 	static RRenderTarget*		mFrameBuffer;
 };

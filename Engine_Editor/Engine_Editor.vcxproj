@@ -83,16 +83,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF "$(Configuration)"=="Debug" (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
 ) ELSE (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -110,16 +110,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF "$(Configuration)"=="Debug" (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
 ) ELSE (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -135,16 +135,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF "$(Configuration)"=="Debug" (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
 ) ELSE (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -162,16 +162,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF "$(Configuration)"=="Debug" (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodL.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudioL.dll" "$(OutDir)"
 ) ELSE (
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
-    xcopy /Y /D "$(SolutionDir)..\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmod.dll" "$(OutDir)"
+    xcopy /Y /D "$(SolutionDir)\JaehuruEngine_Core\External\FMOD\lib\x64\fmodstudio.dll" "$(OutDir)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
