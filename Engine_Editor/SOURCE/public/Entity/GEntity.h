@@ -1,6 +1,8 @@
 #pragma once
 
+//Core
 #include "Common/CommonInclude.h"
+#include "Event/IEvent.h"
 //imgui
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h"

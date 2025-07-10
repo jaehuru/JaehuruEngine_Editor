@@ -24,6 +24,7 @@ public:
 	virtual void	OnEnable();
 	virtual void	OnDisable();
 	virtual void	OnDestroy();
+	virtual void	OnEvent(IEvent& e);
 
 	ImGuiWindowFlags	GetFlag() const { return mFlag; }
 	EState				GetState() const { return mState; }

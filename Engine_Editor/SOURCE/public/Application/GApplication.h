@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Entity/GEntity.h"
+//Core
+#include "Event/IEvent.h"
 
 class GEditorWindow;
 class RRenderTarget;
+class GImguiEditor;
 
 class GApplication
 {
@@ -31,17 +34,23 @@ public:
 	static void		Run();
 	static void		Release();
 
+	static void		OnEvent(IEvent& e);
+
 	static void		OpenProject();
 	static void		NewScene();
 	static void		SaveScene();
 	static void		SaveSceneAs();
 	static void		OpenScene(const filesystem::path& path);
 
-private:
-	static bool		imGguiInitialize();
-	static void		imGuiRender();
+	static void		OnImGuiRender();
+
+	//Event
+	static void		SetCursorPos(double x, double y);
 
 private:
+	static RRenderTarget*		mFrameBuffer;
+	static GImguiEditor*		mImguiEditor;
+
 	static map<wstring, GEditorWindow*> mEditorWindows;
 
 	static ImGuiWindowFlags		mFlag;
@@ -54,5 +63,5 @@ private:
 	static bool					mViewportHovered;
 	static int					mGuizmoType;
 
-	static RRenderTarget*		mFrameBuffer;
+	static EventCallbackFn		mEventCallback;
 };

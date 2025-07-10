@@ -118,6 +118,9 @@
     <ClInclude Include="SOURCE\public\Windows\GEditorWindow.h">
       <Filter>SOURCE\public\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\public\Editor\GImguiEditor.h">
+      <Filter>SOURCE\public\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine_Editor.rc">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\private\Windows\GEditorWindow.cpp">
       <Filter>SOURCE\private\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\private\Editor\GImguiEditor.cpp">
+      <Filter>SOURCE\private\Editor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

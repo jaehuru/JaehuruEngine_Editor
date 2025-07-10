@@ -49,3 +49,8 @@ void GEditorWindow::OnDestroy()
 {
 
 }
+
+void GEditorWindow::OnEvent(IEvent& e) 
+{
+
+}

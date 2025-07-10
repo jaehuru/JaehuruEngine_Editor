@@ -1,14 +1,14 @@
 ﻿#include "framework.h"
 #include "Engine_Editor.h"
 //Core
-#include "HighLevelInterface/IApplication.h"
+#include "HighLevelInterface/JApplication.h"
 //Editor
 #include "Application/GApplication.h"
 #include "Entity/GEntity.h"
 //Contents
 #include "Contents/LoadScenes.h"
 
-IApplication application;
+JApplication application;
 
 #define MAX_LOADSTRING 100
 
@@ -156,12 +156,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             else if (wParam == SIZE_RESTORED)
             {
                 application.SetMinimized(false);
-                application.ReszieGraphicDevice();
+                application.GetWindow().SetWindowResize(LOWORD(lParam), HIWORD(lParam));
             }
             else if (wParam == SIZE_MAXIMIZED)
             {
                 application.SetMinimized(false);
-                application.ReszieGraphicDevice();
+                application.GetWindow().SetCursorPos(wParam, lParam);
+                GApplication::SetCursorPos(wParam, lParam);
             }
         }
         break;

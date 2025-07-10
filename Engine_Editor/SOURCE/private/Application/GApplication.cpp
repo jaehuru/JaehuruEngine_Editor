@@ -3,8 +3,9 @@
 #include "Editor/GEditor.h"
 #include "Windows/GEditorWindow.h"
 #include "Windows/GInspectorWindow.h"
+#include "Editor/GImguiEditor.h"
 //Core
-#include "HighLevelInterface/IApplication.h"
+#include "HighLevelInterface/JApplication.h"
 #include "Renderer/RRenderer.h"
 #include "Actor/AActor.h"
 #include "Component/Transform/JTransform.h"
@@ -12,11 +13,14 @@
 #include "Resource/RTexture.h"
 #include "Helpers/Input.h"
 #include "Component/Camera/JCamera.h"
+#include "Event/JMouseEvent.h"
 
 
 
-extern IApplication application;
+extern JApplication application;
 
+RRenderTarget* GApplication::mFrameBuffer = nullptr;
+GImguiEditor* GApplication::mImguiEditor = nullptr;
 map<wstring, GEditorWindow*> GApplication::mEditorWindows;
 ImGuiWindowFlags GApplication::mFlag = ImGuiWindowFlags_None;
 ImGuiDockNodeFlags GApplication::mDockspaceFlags = ImGuiDockNodeFlags_None;
@@ -27,14 +31,17 @@ FVector2 GApplication::mViewportSize;
 bool GApplication::mViewportFocused = false;
 bool GApplication::mViewportHovered = false;
 int GApplication::mGuizmoType = -1;
-RRenderTarget* GApplication::mFrameBuffer = nullptr;
+EventCallbackFn GApplication::mEventCallback = nullptr;
 
 bool GApplication::Initialize()
 {
-	imGguiInitialize();
+	mImguiEditor = new GImguiEditor();
 	mFrameBuffer = renderer::FrameBuffer;
+
+	mImguiEditor->Initialize();
 	GInspectorWindow* inspector = new GInspectorWindow();
 	mEditorWindows.insert(make_pair(L"InspectorWindow", inspector));
+	mEventCallback = &GApplication::OnEvent;
 
 	return true;
 }
@@ -45,7 +52,9 @@ void GApplication::Update()
 
 void GApplication::OnGUI()
 {
-	imGuiRender();
+	mImguiEditor->Begin();
+	OnImGuiRender();
+	mImguiEditor->End();
 }
 
 void GApplication::Run()
@@ -56,10 +65,23 @@ void GApplication::Run()
 
 void GApplication::Release()
 {
+	for (auto iter : mEditorWindows)
+	{
+		delete iter.second;
+		iter.second = nullptr;
+	}
+
 	// Cleanup
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
+	delete mImguiEditor;
+	mImguiEditor = nullptr;
+}
+
+void GApplication::OnEvent(IEvent& e)
+{
+	if (!e.Handled)
+	{
+		mImguiEditor->OnEvent(e);
+	}
 }
 
 void GApplication::OpenProject()
@@ -87,56 +109,28 @@ void GApplication::OpenScene(const filesystem::path& path)
 
 }
 
-bool GApplication::imGguiInitialize()
+void GApplication::OnImGuiRender()
 {
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	// Load Fonts
+	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
+	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
+	// - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
+	// - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
+	// - Use '#define IMGUI_ENABLE_FREETYPE' in your imconfig file to use Freetype for higher quality font rendering.
+	// - Read 'docs/FONTS.md' for more instructions and details.
+	// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
+	//io.Fonts->AddFontDefault();
+	//io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
+	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
+	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
+	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+	//IM_ASSERT(font != NULL);
 
-	/*io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;*/
-
-
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
-
-	// Setup Platform/Renderer backends
-	ImGui_ImplWin32_Init(application.GetHwnd());
-
-	RGraphicDevice_DX11*& graphicdevice = GetDevice();
-	ID3D11Device* device = graphicdevice->GetID3D11Device().Get();
-	ID3D11DeviceContext* device_context = graphicdevice->GetID3D11DeviceContext().Get();
-
-	ImGui_ImplDX11_Init(device, device_context);
-
-	return false;
-}
-
-void GApplication::imGuiRender()
-{
 	// Our state
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	// Start the Dear ImGui frame
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
 
 	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 	// because it would be confusing to have two docking targets within each others.
@@ -165,7 +159,7 @@ void GApplication::imGuiRender()
 	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	bool Active = static_cast<bool>(mState);
-	ImGui::Begin("GApplication", &Active, mFlag);
+	ImGui::Begin("EditorApplication", &Active, mFlag);
 	ImGui::PopStyleVar();
 
 	if (mFullScreen)
@@ -245,7 +239,7 @@ void GApplication::imGuiRender()
 	mViewportHovered = ImGui::IsWindowHovered();
 
 	// to do : mouse, keyboard event
-	// 
+	mImguiEditor->BlockEvent(!mViewportHovered);
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -264,7 +258,7 @@ void GApplication::imGuiRender()
 		ImGui::EndDragDropTarget();
 	}
 
-	// guizmo
+	// To do : guizmo
 	AActor* selectedActor = renderer::selectedActor;
 	mGuizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	if (selectedActor && mGuizmoType != -1)
@@ -317,19 +311,16 @@ void GApplication::imGuiRender()
 		}
 	}
 
-	ImGui::End();
+	ImGui::End();	// Scene end
 	ImGui::PopStyleVar();
 
-	ImGui::End();
+	ImGui::End(); // dockspace end
+}
 
-	// Rendering
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+void GApplication::SetCursorPos(double x, double y)
+{
+	MouseMovedEvent event(static_cast<float>(x), static_cast<float>(y));
 
-	// Update and Render additional Platform Windows
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}
+	if (mEventCallback)
+		mEventCallback(event);
 }

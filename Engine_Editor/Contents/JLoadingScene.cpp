@@ -1,13 +1,13 @@
 #include "JLoadingScene.h"
 #include "JPlayScene.h"
 //Engine
-#include "HighLevelInterface/IApplication.h"
+#include "HighLevelInterface/JApplication.h"
 #include "Renderer/RRenderer.h"
 #include "Scene/JSceneManager.h"
 #include "Resource/RResources.h"
 #include "Resource/RTexture.h"
 
-extern IApplication application;
+extern JApplication application;
 
 JLoadingScene::JLoadingScene() :
 	mbLoadCompleted(false),
