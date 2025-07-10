@@ -7,6 +7,7 @@
 class GEditorWindow;
 class RRenderTarget;
 class GImguiEditor;
+class KeyPressedEvent;
 
 class GApplication
 {
@@ -45,7 +46,12 @@ public:
 	static void		OnImGuiRender();
 
 	//Event
+	static void		SetKeyPressed(int keyCode, int scancode, int action, int mods);
 	static void		SetCursorPos(double x, double y);
+
+	static bool		OnKeyPressed(KeyPressedEvent& e);
+
+	static void		SetGuizmoType(int type) { mGuizmoType = type; }
 
 private:
 	static RRenderTarget*		mFrameBuffer;

@@ -13,7 +13,8 @@
 #include "Resource/RTexture.h"
 #include "Helpers/Input.h"
 #include "Component/Camera/JCamera.h"
-#include "Event/JMouseEvent.h"
+#include "Event/FMouseEvent.h"
+#include "Event/FKeyEvent.h"
 
 
 
@@ -78,6 +79,32 @@ void GApplication::Release()
 
 void GApplication::OnEvent(IEvent& e)
 {
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<KeyPressedEvent>([](KeyPressedEvent& e) -> bool
+		{
+			// Todo : KeyPressedEvent
+			if (OnKeyPressed(e))
+				return true;
+
+			return false;
+		});
+
+	dispatcher.Dispatch<KeyReleasedEvent>([](KeyReleasedEvent& e) -> bool
+		{
+			// Todo : KeyReleasedEvent
+			//if (OnKeyPressed(e))
+				//return true;
+
+			return false;
+		});
+
+	dispatcher.Dispatch<MouseMovedEvent>([](MouseMovedEvent& e) -> bool
+		{
+			// Todo : MouseMovedEvent
+
+			return true;
+		});
+
 	if (!e.Handled)
 	{
 		mImguiEditor->OnEvent(e);
@@ -127,7 +154,7 @@ void GApplication::OnImGuiRender()
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
 
-	// Our state
+	// Our State
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -218,21 +245,21 @@ void GApplication::OnImGuiRender()
 		ImGui::EndMenuBar();
 	}
 
-	for (auto iter : mEditorWindows)
+	for (auto& iter : mEditorWindows)
 		iter.second->Run();
 
 	// viewport
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 	ImGui::Begin("Scene");
 
-	auto viewportMinRegion = ImGui::GetWindowContentRegionMin(); 
-	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax(); 
-	auto viewportOffset = ImGui::GetWindowPos(); 
+	const auto viewportMinRegion = ImGui::GetWindowContentRegionMin(); 
+	const auto viewportMaxRegion = ImGui::GetWindowContentRegionMax(); 
+	const auto viewportOffset = ImGui::GetWindowPos(); 
 
-	const int letTop = 0;
-	const int rightBottom = 1;
-	mViewportBounds[letTop] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-	mViewportBounds[rightBottom] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+	constexpr int letTop = 0;
+	constexpr int rightBottom = 1;
+	mViewportBounds[letTop] = FVector2{ viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+	mViewportBounds[rightBottom] = FVector2{ viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 	// check if the mouse,keyboard is on the Sceneview
 	mViewportFocused = ImGui::IsWindowFocused();
@@ -242,7 +269,7 @@ void GApplication::OnImGuiRender()
 	mImguiEditor->BlockEvent(!mViewportHovered);
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+	mViewportSize = FVector2{ viewportPanelSize.x, viewportPanelSize.y };
 	RTexture* texture = mFrameBuffer->GetAttachmentTexture(0);
 	ImGui::Image((ImTextureID)texture->GetSRV().Get(), ImVec2{ mViewportSize.x, mViewportSize.y }
 	, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
@@ -252,7 +279,7 @@ void GApplication::OnImGuiRender()
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PROJECT_ITEM"))
 		{
-			const wchar_t* path = (const wchar_t*)payload->Data;
+			const auto path = static_cast<const wchar_t*>(payload->Data);
 			OpenScene(path);
 		}
 		ImGui::EndDragDropTarget();
@@ -260,11 +287,11 @@ void GApplication::OnImGuiRender()
 
 	// To do : guizmo
 	AActor* selectedActor = renderer::selectedActor;
-	mGuizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	if (selectedActor && mGuizmoType != -1)
 	{
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetGizmoSizeClipSpace(0.15f);
 		ImGuizmo::SetRect(mViewportBounds[0].x, mViewportBounds[0].y
 			, mViewportBounds[1].x - mViewportBounds[0].x, mViewportBounds[1].y - mViewportBounds[0].y);
 
@@ -289,8 +316,14 @@ void GApplication::OnImGuiRender()
 
 		float snapValues[3] = { snapValue, snapValue, snapValue };
 
-		ImGuizmo::Manipulate(*viewMatrix.m, *projectionMatrix.m, static_cast<ImGuizmo::OPERATION>(mGuizmoType)
-			, ImGuizmo::LOCAL, *worldMatrix.m, nullptr, snap ? snapValues : nullptr);
+		ImGuizmo::Manipulate(
+			*viewMatrix.m,
+			*projectionMatrix.m,
+			static_cast<ImGuizmo::OPERATION>(mGuizmoType),
+			ImGuizmo::WORLD,
+			*worldMatrix.m,
+			nullptr,
+			snap ? snapValues : nullptr);
 
 		if (ImGuizmo::IsUsing())
 		{
@@ -317,10 +350,99 @@ void GApplication::OnImGuiRender()
 	ImGui::End(); // dockspace end
 }
 
+void GApplication::SetKeyPressed(int keyCode, int scancode, int action, int mods)
+{
+	constexpr int RELEASE = 0;
+	constexpr int PRESS = 1;
+	constexpr int REPEAT = 2;
+
+	//To do : repeat check
+	//if (action == PRESS)
+		//action = REPEAT;
+	//static std::unordered_map<key, >
+
+	// unordered map key setting
+
+	switch (action)
+	{
+	case RELEASE:
+	{
+		KeyReleasedEvent event(static_cast<EKeyCode>(keyCode));
+
+		if (mEventCallback)
+			mEventCallback(event);
+	}
+	break;
+	case PRESS:
+	{
+		KeyPressedEvent event(static_cast<EKeyCode>(keyCode), false);
+
+		if (mEventCallback)
+			mEventCallback(event);
+	}
+	break;
+	case REPEAT:
+	{
+		KeyPressedEvent event(static_cast<EKeyCode>(keyCode), true);
+
+		if (mEventCallback)
+			mEventCallback(event);
+	}
+	break;
+	}
+}
+
 void GApplication::SetCursorPos(double x, double y)
 {
 	MouseMovedEvent event(static_cast<float>(x), static_cast<float>(y));
 
 	if (mEventCallback)
 		mEventCallback(event);
+}
+
+bool GApplication::OnKeyPressed(KeyPressedEvent& e)
+{
+	if (e.IsRepeat())
+		return false;
+
+	bool control = Input::GetKey(EKeyCode::Leftcontrol) || Input::GetKey(EKeyCode::RightControl);
+	bool shift = Input::GetKey(EKeyCode::LeftShift) || Input::GetKey(EKeyCode::RightShift);
+
+	switch (e.GetKeyCode())
+	{
+		// Gizmos
+	case EKeyCode::Q:
+	{
+		if (!ImGuizmo::IsUsing())
+			SetGuizmoType(-1);
+		break;
+	}
+	case EKeyCode::W:
+	{
+		if (!ImGuizmo::IsUsing())
+			SetGuizmoType(ImGuizmo::OPERATION::TRANSLATE);
+		break;
+	}
+	case EKeyCode::E:
+	{
+		if (!ImGuizmo::IsUsing())
+			SetGuizmoType(ImGuizmo::OPERATION::ROTATE);
+		break;
+	}
+	case EKeyCode::R:
+	{
+		if (control)
+		{
+			//ScriptEngine::ReloadAssembly();
+		}
+		else
+		{
+			if (!ImGuizmo::IsUsing())
+				SetGuizmoType(ImGuizmo::OPERATION::SCALE);
+		}
+		break;
+	}
+	}
+
+	return true;
 }

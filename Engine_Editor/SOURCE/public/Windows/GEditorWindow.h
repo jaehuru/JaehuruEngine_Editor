@@ -30,7 +30,7 @@ public:
 	EState				GetState() const { return mState; }
 	ImVec2				GetSize() const { return mSize; }
 
-	void	SetState(EState state) { mState = state; }
+	void	SetState(EState State) { mState = State; }
 	void	SetSize(ImVec2 size) { mSize = size; }
 
 private:
